@@ -45,7 +45,7 @@ OUTPUT=$(docker run --rm -i -t -v ~/geth2logs:/var/log/geth -p 30303:30303 -d ge
 sleep 2 &
 spinner
 wait
-printf "\n Waiting if it fails or not..\n"
+printf "\n Waiting to check if it fails or not..\n"
 
 
 sleep 3 &
@@ -70,18 +70,24 @@ OUTPUT=$(kubectl create deployment geth-app --image=jozzy008/geth2:v0.0.1)
 SUCCESS_TEST="deployment.apps/geth-app created"
 
 if [ "$OUTPUT" == "$SUCCESS_TEST" ];then
-    echo "success! Deleting it.."
-    kubectl delete deployment geth-app
+    echo "success!"
 else
-    echo "deployment failed. Exiting..."
-    kubectl delete deployment geth-app
-    exit 1
+    echo "Already exist. Continueing.."
+    
 fi
 
 sleep 1
 
+printf "\n\nPlease check that if the pods status is Running or not using kubectl get pod.\n\n"
+
 
 echo "All set up and completed with success. Exiting..."
+sleep 5 &
+
+spinner
+
+wait
+
 
 exit 0
 
