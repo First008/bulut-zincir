@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: geth-app2
+  labels:
+    app: web
+spec:
+  containers:
+    - name: geth2
+      image: jozzy008/geth2:v0.0.1
+      ports:
+        - containerPort: 80
