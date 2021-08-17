@@ -1,0 +1,16 @@
+---
+curl -k -X POST -H "Content-Type: application/yaml" \
+-H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlJReXhsVnpDMkM0MlFGanVmUmFiVGVjeUNZdllsWXpPQ1RvcXZhTjRjSzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tZ3Z2NmIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE4Y2YyYTIzLWE5NGItNDcyZC04NTIwLTc1NTNlZWM0MjQ4MSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.D9lUkvHREnNrTJmlBeobG1N2IgZAyAZlxBtC1LsM3pK9-fADyLlFmXFmZXR3QWcd6sFppOhYzHbK4yiScpK733iAKMCN7nxL7Q8GDkuSiOn61MVsJt7kvalEk9_dxDjJorzu09py3WxYtoVE_jc2rww2pzNkNwUYQhUbWqsaD6LkZu_dOpq3Qt3U5zmZH3nilcQ7YIsBmX2E3lf9D-nXEE7aXP6gQJ5h3wikMFgx4fjd5MN1vuWE6KzSsLnJGQSInuvOFug9iRVhWD3QaISP0yyGFpEn9mgLzxCGDW3_GrgdlDSWrcSlG5ejFsBIqV7Y6BvYjZrV1CxYrH4V6Gu9xw" --data '
+apiVersion: v1
+kind: Pod
+metadata:
+  name: geth-app3
+  labels:
+    app: web
+spec:
+  containers:
+    - name: geth2
+      image: jozzy008/geth2:v0.0.1
+      ports:
+        - containerPort: 80
+' "http://127.0.0.1:8080/api/v1/namespaces/default/pods"
