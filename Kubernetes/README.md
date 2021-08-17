@@ -43,4 +43,20 @@
  - Than you expose it with ``` kubectl expose deployment geth-app --type=LoadBalancer --port=8080  ```.
  
  - Than type the following command -> ``` minikube service geth-app ```. And it opens the service on browser.
+ 
+ 
+ - # Deploy Pod Using Api
+ 
+ - start serve ```$ microk8s kubectl proxy --port=8080```
+ 
+ - then you have to learn what the default token and decode it.
+ 
+ - Learn token with ``` microk8s kubectl get secret --namespace=default ```
+ 
+ - Then paste the default-xxxx-xxx -> ```microk8s kubectl get secret default-xxxx-xxxx --namespace=default -o yaml```
+ 
+ - Copy the token and decode it. After that you can use the decoded token in the code below.
+ 
+ - curl -k -v -X POST -H "Authorization: Bearer {token}" -H "Content-Type: application/json" http://127.0.0.1:8080/api/v1/namespaces/default/pods -d@geth.json
+
 
