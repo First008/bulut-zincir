@@ -1,0 +1,1 @@
+ - This folder contains some example codes which will be helpful for us when we really start coding.
