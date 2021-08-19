@@ -26,3 +26,15 @@
  - Then to deploy enter this
  
  - ``` bulut-zincir run --image geth2 --version v0.0.1 --http --http.corsdomain https://remix.ethereum.org --http.api personal,eth,net,web3 --rpc --rpccorsdomain "http://remix.ethereum.org" ```
+ 
+ - The pod should be created and running.
+ 
+ - # What this script doing?
+ 
+ - What that this script done is if you pass a run and the bunch of other arguments it collects the other arguments and putting the right arguments in right places on the yaml template.
+ 
+ - Then it converts that yaml to the json and generates a json file. 
+ 
+ - After that it just runs the code which i stated end of the [Kubernetes/README.md](https://bag.org.tr/proje/bulutzincir/bulut-zincir/tree/master/Kubernetes). But I'll put it in here as well ->
+ 
+ - ``` curl -k -v -X POST -H "Authorization: Bearer {token}" -H "Content-Type: application/json" http://127.0.0.1:8080/api/v1/namespaces/default/pods -d@geth.json ```
