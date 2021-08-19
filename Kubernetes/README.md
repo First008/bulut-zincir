@@ -57,6 +57,6 @@
  
  - Copy the token and decode it. After that you can use the decoded token in the code below.
  
- - curl -k -v -X POST -H "Authorization: Bearer {token}" -H "Content-Type: application/json" http://127.0.0.1:8080/api/v1/namespaces/default/pods -d@geth.json
+ - ```curl -k -v -X POST -H "Authorization: Bearer {token}" -H "Content-Type: application/json" http://127.0.0.1:8080/api/v1/namespaces/default/pods -d@geth.json```
 
 
