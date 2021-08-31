@@ -1,0 +1,18 @@
+# sadece pod tanimi
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: geth-on-kube
+  labels:
+    app: geth
+spec:
+  containers:
+    - name: geth
+      image: ethereum/client-go
+      ports:
+        - containerPort: 80
+
+# TODO service tanimlanmadan replica controller tanimlanmali
+# TODO replica controller tanimlandiktan sonra service tanimlanmali
+# bu objectler minimum deployment (deployment dogru ifade mi ?) yeterli olmali
