@@ -6,6 +6,8 @@
 
 # sorular
 - minimum demo ortami icin nasil bir manifest gerekli ?
+    - replication controller
+    - service
 
 # notlar
 
@@ -16,9 +18,11 @@
  kubectl expose ...
  ```
 
+ bu komutlarda kubernets apisine mudehale ediyor
+
 # TODO
 
-- [ ] disardan erisilebilen minimal bir geth (deployment ?) kubernetes objecti olustur.
+- [X] disardan erisilebilen minimal bir geth kubernetes objecti olustur (YAML manifest). (manifests/deployments/basic-geth.yml)
 
 # cheatsheet
 

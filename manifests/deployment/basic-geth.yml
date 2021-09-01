@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: geth-deployment-example
+  name: hello-geth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geth-example
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geth-example
+    spec:
+      containers:
+      - image: ethereum/client-go
+        name: geth
+        ports:
+        - containerPort: 8545
+        args: ["--dev", "--http", "--http.addr", "0.0.0.0"]
+
+        

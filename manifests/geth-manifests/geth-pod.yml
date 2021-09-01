@@ -11,7 +11,9 @@ spec:
     - name: geth
       image: ethereum/client-go
       ports:
-        - containerPort: 80
+        - containerPort: 8545
+      args: ["--dev", "--http"]
+
 
 # TODO service tanimlanmadan replica controller tanimlanmali
 # TODO replica controller tanimlandiktan sonra service tanimlanmali

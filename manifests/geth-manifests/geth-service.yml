@@ -1,0 +1,22 @@
+# (Service) An abstract way to expose an application running on a set of Pods as 
+# a network service.
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: geth-deployment-example
+  name: geth-service
+spec:
+  ports:
+  - nodePort: 30464
+    port: 8545
+    protocol: TCP
+    targetPort: 8545
+  selector:
+    app.kubernetes.io/name: geth-example
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 192.168.0.107
