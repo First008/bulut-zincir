@@ -19,6 +19,4 @@ spec:
         name: geth
         ports:
         - containerPort: 8545
-        args: ["--dev", "--http", "--http.addr", "0.0.0.0"]
-
-        
+        args: ["--dev", "--http", "--http.addr", "0.0.0.0", "--http.api", "eth,net,web3,admin"]
