@@ -1,0 +1,15 @@
+# WIP kullanma
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: geth-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual # bu ne ?
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/root/.ethereum"
