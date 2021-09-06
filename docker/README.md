@@ -1,4 +1,4 @@
-# CLOUD-CHAIN
+# docker
 
  - To build image, type the following command to terminal ``` docker build --tag geth2 ```.
  
