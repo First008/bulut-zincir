@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # hangileri statefulsetler ile eslestrilmekte kullaniliyor ?
+  name: geth
+  namespace: geth
+  labels:
+    app: geth
+spec:
+  ports:
+  - port: 8545
+    name: rpc
+  clusterIP: None
+  selector:
+    app: geth
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth
+  namespace: geth
+spec:
+  serviceName: "geth"
+  replicas: 1 # by default is 1
+  selector:
+    matchLabels:
+      app: geth # has to match .spec.template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: geth # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: geth
+        image: ethereum/client-go
+        ports:
+        - containerPort: 8545
+        - name: discovery-udp
+          containerPort: 30303
+          protocol: UDP
+        - name: discovery-tcp
+          containerPort: 30303
+
+        args: ["--dev", "--http", "--http.addr", "0.0.0.0", "--http.api", "eth,net,web3,admin", "--http.corsdomain", "*", "--ws" ,"--networkid=$(NETWORK_ID)" ,"--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", "--verbosity=5"]
+          
+        env:
+        - name: ETHSTATS_SVC
+          value: eth-ethstats.dcp
+        - name: ETHSTATS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: eth-ethstats
+              key: WS_SECRET
+        - name: NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: networkid
+
+      initContainers:
+      - name: init-genesis
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args:
+        - "init"
+        - "/var/geth/genesis.json"
+        volumeMounts:
+        - name: data
+          mountPath: /root/.ethereum
+        - name: config
+          mountPath: /var/geth
+
+
+      volumes: 
+        - name: data
+          hostPath:
+            path: /root/.ethereum
+        - name: config
+          hostPath:
+            path: /var/geth    
+      
+
