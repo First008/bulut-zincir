@@ -42,11 +42,13 @@ spec:
         - name: discovery-tcp
           containerPort: 30303
 
-        args: ["--dev", "--http", "--http.addr", "0.0.0.0", "--http.api", "eth,net,web3,admin", "--http.corsdomain", "*", "--ws" ,"--networkid=$(NETWORK_ID)" ,"--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", "--verbosity=5"]
+        args: ["--dev", "--http", "--http.addr", "0.0.0.0", "--http.api", "eth,net,web3,admin", "--http.corsdomain", "*", "--networkid=$(NETWORK_ID)" ,"--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", "--verbosity=5"]
           
         env:
+        - name: HOSTNAME
+          value: ortapc
         - name: ETHSTATS_SVC
-          value: eth-ethstats.dcp
+          value: 10.1.189.76:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
