@@ -42,7 +42,16 @@ spec:
         - name: discovery-tcp
           containerPort: 30303
 
-        args: ["--dev", "--mine", "--http", "--http.addr", "0.0.0.0", "--http.vhosts", "*", "--http.api", "eth,net,web3,admin,clique", "--http.corsdomain", "*", "--networkid=$(NETWORK_ID)" ,"--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", "--datadir", /root/.ethereum/data, "--verbosity=5"]
+        args: [
+          "--http", 
+          "--http.addr", "0.0.0.0", 
+          "--http.vhosts", "*", 
+          "--http.api", "eth,net,web3,admin,clique", 
+          "--http.corsdomain", "*", 
+          "--networkid", "$(NETWORK_ID)", 
+          "--datadir", "/root/.ethereum/data",
+          "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
+          "--verbosity=6"]
           
         env:
         - name: HOSTNAME
@@ -77,7 +86,9 @@ spec:
       - name: init-genesis
         image: ethereum/client-go:release-1.8
         imagePullPolicy: IfNotPresent
-        args: ["--datadir", "/root/.ethereum/data", "init", "/var/geth/genesis.json"]
+        args: [
+          "--datadir", "/root/.ethereum/data",
+          "init", "/var/geth/genesis.json"]
         
         volumeMounts:
         - name: data
