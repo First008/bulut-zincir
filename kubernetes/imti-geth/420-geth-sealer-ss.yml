@@ -32,32 +32,39 @@ spec:
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-      - name: geth
+      - name: geth-node1
         image: ethereum/client-go
         ports:
         - containerPort: 8545
         - name: discovery-udp
-          containerPort: 30303
+          containerPort: 30311
           protocol: UDP
         - name: discovery-tcp
-          containerPort: 30303
+          containerPort: 30311
 
         args: [
+          "--datadir", "/root/.ethereum/node1",
+          "--syncmode", "full", 
+          "--port", "30311",
+          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
           "--http", 
-          "--http.addr", "0.0.0.0", 
+          "--http.addr", "0.0.0.0", "--http.port", "8545",
           "--http.vhosts", "*", 
-          "--http.api", "eth,net,web3,admin,clique", 
+          "--http.api", "admin,eth,miner,net,txpool,personal,web3,clique", 
           "--http.corsdomain", "*", 
           "--networkid", "$(NETWORK_ID)", 
-          "--datadir", "/root/.ethereum/data",
           "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
+          "--mine", "--miner.etherbase", "0xBC1C09acefbc15A0D325584c7A704fa310907E67",
+          "--allow-insecure-unlock",
+          "--unlock", "0xBC1C09acefbc15A0D325584c7A704fa310907E67", 
+          "--password", "/root/.ethereum/pswd/password.txt",
           "--verbosity=6"]
           
         env:
         - name: HOSTNAME
           value: ortapc
         - name: ETHSTATS_SVC
-          value: 10.1.189.103:3000
+          value: 10.1.189.77:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -69,56 +76,224 @@ spec:
               name: eth-geth
               key: networkid
 
+        volumeMounts:
+          - mountPath: /root/.ethereum
+            name: deney
+          - name: config-genesis
+            mountPath: /root/.ethereum/pswd/password.txt
+            subPath: password.txt
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+            subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+            subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+            subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+          
+          
+            
+
+      - name: geth-node2
+        image: ethereum/client-go
+        ports:
+        - containerPort: 8546
+        - name: discovery-udp
+          containerPort: 30312
+          protocol: UDP
+        - name: discovery-tcp
+          containerPort: 30312
+
+        args: [
+          "--datadir", "/root/.ethereum/node2",
+          "--syncmode", "full", 
+          "--port", "30312",
+          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
+          "--http", 
+          "--http.addr", "0.0.0.0", "--http.port", "8546",
+          "--http.vhosts", "*", 
+          "--http.api", "admin,eth,miner,net,txpool,personal,web3,clique", 
+          "--http.corsdomain", "*", 
+          "--networkid", "$(NETWORK_ID)", 
+          "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
+          "--mine", "--miner.etherbase", "0xAb412dB6F0733dECC8e23ee97E6dC569422a0490",
+          "--allow-insecure-unlock",
+          "--unlock", "0xAb412dB6F0733dECC8e23ee97E6dC569422a0490", 
+          "--password", "/root/.ethereum/pswd/password.txt",
+          "--verbosity=6"]
+          
+        env:
+        - name: HOSTNAME
+          value: ortapc
+        - name: ETHSTATS_SVC
+          value: 10.1.189.77:3000
+        - name: ETHSTATS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: eth-ethstats
+              key: WS_SECRET
+        - name: NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: networkid
+
+        volumeMounts:
+          - mountPath: /root/.ethereum
+            name: deney
+          - name: config-genesis
+            mountPath: /root/.ethereum/pswd/password.txt
+            subPath: password.txt
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+            subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+            subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+            subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+
+      - name: geth-node3
+        image: ethereum/client-go
+        ports:
+        - containerPort: 8547
+        - name: discovery-udp
+          containerPort: 30313
+          protocol: UDP
+        - name: discovery-tcp
+          containerPort: 30313
+
+        args: [
+          "--datadir", "/root/.ethereum/node3",
+          "--syncmode", "full",
+          "--port", "30313",
+          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
+          "--http", 
+          "--http.addr", "0.0.0.0", "--http.port", "8547",
+          "--http.vhosts", "*", 
+          "--http.api", "admin,eth,miner,net,txpool,personal,web3,clique", 
+          "--http.corsdomain", "*", 
+          "--networkid", "$(NETWORK_ID)", 
+          "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
+          "--mine", "--miner.etherbase", "0x8E24c067e098c2DaDF28aec75A551257d2C9316f",
+          "--allow-insecure-unlock",
+          "--unlock", "0x8E24c067e098c2DaDF28aec75A551257d2C9316f", 
+          "--password", "/root/.ethereum/pswd/password.txt",
+          "--verbosity=6"]
+          
+        env:
+        - name: HOSTNAME
+          value: ortapc
+        - name: ETHSTATS_SVC
+          value: 10.1.189.77:3000
+        - name: ETHSTATS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: eth-ethstats
+              key: WS_SECRET
+        - name: NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: networkid
+
+        volumeMounts:
+          - mountPath: /root/.ethereum
+            name: deney
+          - name: config-genesis
+            mountPath: /root/.ethereum/pswd/password.txt
+            subPath: password.txt
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+            subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+            subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+            subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+
       initContainers:
       - name: create-genesis
         image: ethereum/client-go:release-1.8
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
-        args:
-        - "-c"
-        - "cat /var/geth/genesis.json"
+
         
         volumeMounts:
         - name: config-genesis
-          mountPath: /var/geth/genesis.json
+          mountPath: /root/.ethereum/genesis.json
           subPath: genesis.json
+        - name: deney
+          mountPath: /root/.ethereum/node1/
+        - name: deney
+          mountPath: /root/.ethereum/node2/
+        - name: deney
+          mountPath: /root/.ethereum/node3/
+        - name: deney
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/pswd/password.txt
+          subPath: password.txt
       
-      - name: init-genesis
+      - name: init-genesis-node1
         image: ethereum/client-go:release-1.8
         imagePullPolicy: IfNotPresent
         args: [
-          "--datadir", "/root/.ethereum/data",
-          "init", "/var/geth/genesis.json"]
+          "--datadir", "/root/.ethereum/node1",
+          "init", "/root/.ethereum/genesis.json"]
         
         volumeMounts:
-        - name: data
-          mountPath: /root/.ethereum/data
+        - name: deney
+          mountPath: /root/.ethereum
         - name: config-genesis
-          mountPath: /var/geth/genesis.json
+          mountPath: /root/.ethereum/genesis.json
           subPath: genesis.json
-
-      - name: create-account
+      
+      - name: init-genesis-node2
         image: ethereum/client-go:release-1.8
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh"]
-        args:
-        - "-c"
-        - "printf '\n\n' | geth account new"
+        args: [
+          "--datadir", "/root/.ethereum/node2",
+          "init", "/root/.ethereum/genesis.json"]
         
         volumeMounts:
-        - name: data
-          mountPath: /root/.ethereum/data
+        - name: deney
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/genesis.json
+          subPath: genesis.json
+      
+      - name: init-genesis-node3
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args: [
+          "--datadir", "/root/.ethereum/node3",
+          "init", "/root/.ethereum/genesis.json"]
+        
+        volumeMounts:
+        - name: deney
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/genesis.json
+          subPath: genesis.json
+
+
 
 
       volumes: 
         - name: data
           hostPath:
-            path: /root/.ethereum/data # {} denenecek
+            path: /root/.ethereum # {} denenecek
         - name: config
           hostPath:
-            path: /var/geth
+            path: /root/.ethereum
         - name: config-genesis
           configMap:
             name: eth-geth
+        - emptyDir: {}
+          name: deney
       
 

@@ -8,8 +8,9 @@ metadata:
 spec:
   storageClassName: manual # bu ne ?
   capacity:
-    storage: 10Gi
+    storage: 4Gi
   accessModes:
     - ReadWriteMany
   hostPath:
     path: "/root/.ethereum"
+    

@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # hangileri statefulsetler ile eslestrilmekte kullaniliyor ?
+  name: geth
+  namespace: geth
+  labels:
+    app: geth
+spec:
+  ports:
+  - port: 8545
+    name: rpc
+  clusterIP: None
+  selector:
+    app: geth
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth
+  namespace: geth
+spec:
+  serviceName: "geth"
+  replicas: 1 # by default is 1
+  selector:
+    matchLabels:
+      app: geth # has to match .spec.template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: geth # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: geth
+        image: ethereum/client-go
+        ports:
+        - containerPort: 8545
+        - name: discovery-udp
+          containerPort: 30303
+          protocol: UDP
+        - name: discovery-tcp
+          containerPort: 30303
+
+        args: [
+          "--http", 
+          "--http.addr", "0.0.0.0", 
+          "--http.vhosts", "*", 
+          "--http.api", "eth,net,web3,admin,clique", 
+          "--http.corsdomain", "*", 
+          "--networkid", "$(NETWORK_ID)", 
+          "--datadir", "/root/.ethereum/data",
+          "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
+          "--verbosity=6"]
+          
+        env:
+        - name: HOSTNAME
+          value: ortapc
+        - name: ETHSTATS_SVC
+          value: 10.1.189.103:3000
+        - name: ETHSTATS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: eth-ethstats
+              key: WS_SECRET
+        - name: NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: networkid
+
+      initContainers:
+      - name: create-genesis
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - "cat /var/geth/genesis.json"
+        
+        volumeMounts:
+        - name: config-genesis
+          mountPath: /var/geth/genesis.json
+          subPath: genesis.json
+      
+      - name: init-genesis
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args: [
+          "--datadir", "/root/.ethereum/data",
+          "init", "/var/geth/genesis.json"]
+        
+        volumeMounts:
+        - name: data
+          mountPath: /root/.ethereum/data
+        - name: config-genesis
+          mountPath: /var/geth/genesis.json
+          subPath: genesis.json
+
+      - name: create-account
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - "printf '\n\n' | geth account new"
+        
+        volumeMounts:
+        - name: data
+          mountPath: /root/.ethereum/data
+
+
+      volumes: 
+        - name: data
+          hostPath:
+            path: /root/.ethereum/data # {} denenecek
+        - name: config
+          hostPath:
+            path: /var/geth
+        - name: config-genesis
+          configMap:
+            name: eth-geth
+      
+
