@@ -43,10 +43,10 @@ spec:
           containerPort: 30311
 
         args: [
+          "--bootnodes", "enode://6cef1af52300884160efe3c7a92080055a95ccad266e28d0e53c64b048f7578d25107e7dd91f5299a4016d6afc6a9ffcfa3a4681d2bbbe064e03f6cbc969cabc@127.0.0.1:30311,enode://f1bc4cd704bacb6524718998c4c500d24168d31b5a6dddf6c896d77f266b48313bd1c01ef94916bf3b1dd6ff9579e2e2fe6804cb3ccfd3b14591e3c92ee20d9b@127.0.0.1:30312,enode://d0d3c4f361eebb6385949da2fb3d9c100eb17d72d64c8a8313db418681281dbcfd499fbabba6710d530c227e63a621981be6b2822898658774e5944c4c5f7c3f@127.0.0.1:30313",
           "--datadir", "/root/.ethereum/node1",
           "--syncmode", "full", 
           "--port", "30311",
-          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
           "--http", 
           "--http.addr", "0.0.0.0", "--http.port", "8545",
           "--http.vhosts", "*", 
@@ -54,17 +54,19 @@ spec:
           "--http.corsdomain", "*", 
           "--networkid", "$(NETWORK_ID)", 
           "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
-          "--mine", "--miner.etherbase", "0xBC1C09acefbc15A0D325584c7A704fa310907E67",
           "--allow-insecure-unlock",
           "--unlock", "0xBC1C09acefbc15A0D325584c7A704fa310907E67", 
           "--password", "/root/.ethereum/pswd/password.txt",
-          "--verbosity=6"]
+          "--miner.gasprice", "0", "--miner.etherbase", "0xBC1C09acefbc15A0D325584c7A704fa310907E67",
+          "--mine" #,
+          #"--verbosity=6"
+          ]
           
         env:
         - name: HOSTNAME
-          value: ortapc
+          value: node1
         - name: ETHSTATS_SVC
-          value: 10.1.189.77:3000
+          value: 10.1.189.105:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -78,7 +80,7 @@ spec:
 
         volumeMounts:
           - mountPath: /root/.ethereum
-            name: deney
+            name: data
           - name: config-genesis
             mountPath: /root/.ethereum/pswd/password.txt
             subPath: password.txt
@@ -91,6 +93,15 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node1/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/geth/static-nodes.json
+            subPath: static-nodes.json
           
           
             
@@ -106,10 +117,10 @@ spec:
           containerPort: 30312
 
         args: [
+          "--bootnodes", "enode://6cef1af52300884160efe3c7a92080055a95ccad266e28d0e53c64b048f7578d25107e7dd91f5299a4016d6afc6a9ffcfa3a4681d2bbbe064e03f6cbc969cabc@127.0.0.1:30311,enode://f1bc4cd704bacb6524718998c4c500d24168d31b5a6dddf6c896d77f266b48313bd1c01ef94916bf3b1dd6ff9579e2e2fe6804cb3ccfd3b14591e3c92ee20d9b@127.0.0.1:30312,enode://d0d3c4f361eebb6385949da2fb3d9c100eb17d72d64c8a8313db418681281dbcfd499fbabba6710d530c227e63a621981be6b2822898658774e5944c4c5f7c3f@127.0.0.1:30313",
           "--datadir", "/root/.ethereum/node2",
           "--syncmode", "full", 
           "--port", "30312",
-          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
           "--http", 
           "--http.addr", "0.0.0.0", "--http.port", "8546",
           "--http.vhosts", "*", 
@@ -117,17 +128,19 @@ spec:
           "--http.corsdomain", "*", 
           "--networkid", "$(NETWORK_ID)", 
           "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
-          "--mine", "--miner.etherbase", "0xAb412dB6F0733dECC8e23ee97E6dC569422a0490",
           "--allow-insecure-unlock",
           "--unlock", "0xAb412dB6F0733dECC8e23ee97E6dC569422a0490", 
           "--password", "/root/.ethereum/pswd/password.txt",
-          "--verbosity=6"]
+          "--miner.gasprice", "0", "--miner.etherbase", "0xAb412dB6F0733dECC8e23ee97E6dC569422a0490",
+          "--mine" #,
+          #"--verbosity=6"
+          ]
           
         env:
         - name: HOSTNAME
-          value: ortapc
+          value: node2
         - name: ETHSTATS_SVC
-          value: 10.1.189.77:3000
+          value: 10.1.189.105:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -141,7 +154,7 @@ spec:
 
         volumeMounts:
           - mountPath: /root/.ethereum
-            name: deney
+            name: data
           - name: config-genesis
             mountPath: /root/.ethereum/pswd/password.txt
             subPath: password.txt
@@ -154,6 +167,15 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node2/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/geth/static-nodes.json
+            subPath: static-nodes.json
 
       - name: geth-node3
         image: ethereum/client-go
@@ -166,10 +188,10 @@ spec:
           containerPort: 30313
 
         args: [
+          "--bootnodes", "enode://6cef1af52300884160efe3c7a92080055a95ccad266e28d0e53c64b048f7578d25107e7dd91f5299a4016d6afc6a9ffcfa3a4681d2bbbe064e03f6cbc969cabc@127.0.0.1:30311,enode://f1bc4cd704bacb6524718998c4c500d24168d31b5a6dddf6c896d77f266b48313bd1c01ef94916bf3b1dd6ff9579e2e2fe6804cb3ccfd3b14591e3c92ee20d9b@127.0.0.1:30312,enode://d0d3c4f361eebb6385949da2fb3d9c100eb17d72d64c8a8313db418681281dbcfd499fbabba6710d530c227e63a621981be6b2822898658774e5944c4c5f7c3f@127.0.0.1:30313",
           "--datadir", "/root/.ethereum/node3",
           "--syncmode", "full",
           "--port", "30313",
-          "--miner.gasprice", "0", "--miner.gastarget", "470000000000",
           "--http", 
           "--http.addr", "0.0.0.0", "--http.port", "8547",
           "--http.vhosts", "*", 
@@ -177,17 +199,19 @@ spec:
           "--http.corsdomain", "*", 
           "--networkid", "$(NETWORK_ID)", 
           "--ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC)", 
-          "--mine", "--miner.etherbase", "0x8E24c067e098c2DaDF28aec75A551257d2C9316f",
           "--allow-insecure-unlock",
           "--unlock", "0x8E24c067e098c2DaDF28aec75A551257d2C9316f", 
           "--password", "/root/.ethereum/pswd/password.txt",
-          "--verbosity=6"]
+          "--miner.gasprice", "0", "--miner.etherbase", "0x8E24c067e098c2DaDF28aec75A551257d2C9316f",
+          "--mine" #,
+          #"--verbosity=6"
+          ]
           
         env:
         - name: HOSTNAME
-          value: ortapc
+          value: node3
         - name: ETHSTATS_SVC
-          value: 10.1.189.77:3000
+          value: 10.1.189.105:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -201,7 +225,7 @@ spec:
 
         volumeMounts:
           - mountPath: /root/.ethereum
-            name: deney
+            name: data
           - name: config-genesis
             mountPath: /root/.ethereum/pswd/password.txt
             subPath: password.txt
@@ -214,6 +238,16 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node3/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+          - name: config-genesis
+            mountPath: /root/.ethereum/node1/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node2/geth/static-nodes.json
+            subPath: static-nodes.json
+          - name: config-genesis
+            mountPath: /root/.ethereum/node3/geth/static-nodes.json
+            subPath: static-nodes.json
+          
 
       initContainers:
       - name: create-genesis
@@ -226,13 +260,13 @@ spec:
         - name: config-genesis
           mountPath: /root/.ethereum/genesis.json
           subPath: genesis.json
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum/node1/
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum/node2/
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum/node3/
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum
         - name: config-genesis
           mountPath: /root/.ethereum/pswd/password.txt
@@ -246,7 +280,7 @@ spec:
           "init", "/root/.ethereum/genesis.json"]
         
         volumeMounts:
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum
         - name: config-genesis
           mountPath: /root/.ethereum/genesis.json
@@ -260,7 +294,7 @@ spec:
           "init", "/root/.ethereum/genesis.json"]
         
         volumeMounts:
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum
         - name: config-genesis
           mountPath: /root/.ethereum/genesis.json
@@ -274,19 +308,13 @@ spec:
           "init", "/root/.ethereum/genesis.json"]
         
         volumeMounts:
-        - name: deney
+        - name: data
           mountPath: /root/.ethereum
         - name: config-genesis
           mountPath: /root/.ethereum/genesis.json
           subPath: genesis.json
 
-
-
-
       volumes: 
-        - name: data
-          hostPath:
-            path: /root/.ethereum # {} denenecek
         - name: config
           hostPath:
             path: /root/.ethereum
@@ -294,6 +322,6 @@ spec:
           configMap:
             name: eth-geth
         - emptyDir: {}
-          name: deney
+          name: data
       
 
