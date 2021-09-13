@@ -9,8 +9,13 @@ metadata:
 spec:
   ports:
   - port: 8545
-    name: rpc
-  clusterIP: None
+    name: node1
+  - port: 8546
+    name: node2
+  - port: 8547
+    name: node3
+  clusterIP: 10.152.183.132
+
   selector:
     app: geth
 ---
@@ -66,7 +71,7 @@ spec:
         - name: HOSTNAME
           value: node1
         - name: ETHSTATS_SVC
-          value: 10.1.189.105:3000
+          value: 10.152.183.131:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -93,16 +98,6 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node1/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
-          - name: config-genesis
-            mountPath: /root/.ethereum/node1/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node2/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node3/geth/static-nodes.json
-            subPath: static-nodes.json
-          
           
             
 
@@ -140,7 +135,7 @@ spec:
         - name: HOSTNAME
           value: node2
         - name: ETHSTATS_SVC
-          value: 10.1.189.105:3000
+          value: 10.152.183.131:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -167,15 +162,6 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node2/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
-          - name: config-genesis
-            mountPath: /root/.ethereum/node1/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node2/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node3/geth/static-nodes.json
-            subPath: static-nodes.json
 
       - name: geth-node3
         image: ethereum/client-go
@@ -211,7 +197,7 @@ spec:
         - name: HOSTNAME
           value: node3
         - name: ETHSTATS_SVC
-          value: 10.1.189.105:3000
+          value: 10.152.183.131:3000
         - name: ETHSTATS_SECRET
           valueFrom:
             secretKeyRef:
@@ -238,15 +224,7 @@ spec:
           - name: config-genesis
             mountPath: /root/.ethereum/node3/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
             subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
-          - name: config-genesis
-            mountPath: /root/.ethereum/node1/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node2/geth/static-nodes.json
-            subPath: static-nodes.json
-          - name: config-genesis
-            mountPath: /root/.ethereum/node3/geth/static-nodes.json
-            subPath: static-nodes.json
+
           
 
       initContainers:
