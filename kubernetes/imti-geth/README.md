@@ -1,5 +1,12 @@
 # READ First
 
+ - yeni node eklemek için önce yeni bir account oluşturup onun keyfile'ını configmape koymak gerekiyor.
+ - daha sonra genesis file dosyasından ilk önce private key sonra da private to pub çalıştırılmalı sonuçta çıkan kopyalanmalı.
+ 
+ - yeni bir conteiner eklenmeli enode://kopyalanan@127.0.0.1:port koyulmalı ve bootnodes kısmına , ile eklenmeli
+ 
+ - bunu otomatize etmli
+
  - # Follow the following instructions
  
  - - ``` kubectl apply -f 000-geth-namespace.yml ```
