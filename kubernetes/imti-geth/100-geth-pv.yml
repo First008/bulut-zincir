@@ -2,11 +2,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: geth-volume
+  name: geth-pv
+  namespace: geth
   labels:
     type: local
 spec:
-  storageClassName: manual # bu ne ?
+  storageClassName: microk8s-hostpath # bu ne ?
   capacity:
     storage: 4Gi
   accessModes:
