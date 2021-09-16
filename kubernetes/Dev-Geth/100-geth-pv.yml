@@ -1,0 +1,17 @@
+# WIP kullanma
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: geth-pv-dev
+  namespace: geth
+  labels:
+    type: local
+spec:
+  storageClassName: geth-storage # bu ne ?
+  capacity:
+    storage: 6Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/root/.ethereum"
+    

@@ -1,0 +1,212 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: geth-job
+  namespace: geth
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+        - name: enode-creator #taşınacak
+          image: ethereum/client-go:alltools-release-1.8
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+
+          args: 
+          - "-c"
+          - "bootnode --genkey /root/.ethereum/node-1/bootnode.key && echo -n enode://$(bootnode --nodekey /root/.ethereum/node-1/bootnode.key --writeaddress)@127.0.0.1:30311, > /root/.ethereum/enodelist.txt && bootnode --genkey /root/.ethereum/node-2/bootnode.key && echo -n enode://$(bootnode --nodekey /root/.ethereum/node-2/bootnode.key --writeaddress)@127.0.0.1:30312, >> /root/.ethereum/enodelist.txt && bootnode --genkey /root/.ethereum/node-3/bootnode.key && echo -n enode://$(bootnode --nodekey /root/.ethereum/node-3/bootnode.key --writeaddress)@127.0.0.1:30313 >> /root/.ethereum/enodelist.txt"
+
+          env:
+          - name: ACCOUNT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: geth-account-secret
+                key: accountsecret
+          - name: node1
+            valueFrom:
+              configMapKeyRef:
+                name: eth-geth
+                key: node1
+          - name: node2
+            valueFrom:
+              configMapKeyRef:
+                name: eth-geth
+                key: node2
+          - name: node3
+            valueFrom:
+              configMapKeyRef:
+                name: eth-geth
+                key: node3
+
+
+          volumeMounts:
+          - name: data2
+            mountPath: /root/.ethereum
+          - name: config-genesis
+            mountPath: /root/.ethereum/genesis.json
+            subPath: genesis.json     
+
+       
+      initContainers:
+      
+      - name: create-dirs
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+
+        args: 
+        - "-c"
+        - "mkdir -p /root/.ethereum/bootnode"
+
+
+        env:
+        - name: node1
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node1
+        - name: node2
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node2
+        - name: node3
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node3
+
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
+      
+      - name: init-genesis-node1
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args: [
+          "--datadir", "/root/.ethereum/$(node1)",
+          "init", "/root/.ethereum/genesis.json"
+          ]
+
+        env:
+        - name: node1
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node1
+
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/genesis.json
+          subPath: genesis.json
+        - name: config-genesis
+          mountPath: /root/.ethereum/pswd/password.txt
+          subPath: password.txt
+
+      - name: init-genesis-node2
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args: [
+          "--datadir", "/root/.ethereum/$(node2)",
+          "init", "/root/.ethereum/genesis.json",
+          ]
+
+        env:
+        - name: node2
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node2
+
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/genesis.json
+          subPath: genesis.json
+        - name: config-genesis
+          mountPath: /root/.ethereum/pswd/password.txt
+          subPath: password.txt
+
+      - name: init-genesis-node3
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        args: [
+          "--datadir", "/root/.ethereum/$(node3)",
+          "init", "/root/.ethereum/genesis.json"
+          ]
+
+        env:
+        - name: node3
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node3
+
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
+        - name: config-genesis
+          mountPath: /root/.ethereum/genesis.json
+          subPath: genesis.json
+        - name: config-genesis
+          mountPath: /root/.ethereum/pswd/password.txt
+          subPath: password.txt
+     
+      - name: keystore
+        image: alpine
+
+        command: ["/bin/sh", "-c"]
+        args:
+          - "cp -r /root/.ethereum/keystore /root/.ethereum/$(node1) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node2) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node3)"
+        
+        env:
+        - name: node1
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node1
+        - name: node2
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node2
+        - name: node3
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: node3
+
+        volumeMounts:
+        - mountPath: /root/.ethereum
+          name: data2
+        - name: config-genesis
+          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+          subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+        - name: config-genesis
+          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+          subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+        - name: config-genesis
+          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+          subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f        
+      
+
+      
+
+      volumes: 
+        - name: config
+          hostPath:
+            path: /root/.ethereum
+        - name: config-genesis
+          configMap:
+            name: eth-geth
+        - emptyDir: {}
+          name: data
+        - name: data2
+          persistentVolumeClaim:
+            claimName: 'geth-pv-claim-dev'
+
+      restartPolicy: Never
