@@ -1,0 +1,17 @@
+# WIP kullanma
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: geth-pv-dev
+  namespace: geth
+  labels:
+    type: local
+spec:
+  storageClassName: geth-storage # Claimle aynı class namei göstermesi lazım ki birbirlerini görebilsinler
+  capacity:
+    storage: 6Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/root/.ethereum" # Bu pathi persistence yapmak istediğimizi söylüyoruz. 
+    

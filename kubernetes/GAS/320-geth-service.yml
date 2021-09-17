@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth      # Servisin ismi
+  namespace: geth # Yer alacağı namespace
+  labels:
+    app: geth     # Altında yer alacağı app
+spec:
+  ports:
+  - port: 8545            
+    name: node1
+  - port: 8546
+    name: node2
+  - port: 8547
+    name: node3
+  - port: 30311 # Podlara yönlenecek portları veriyoruz.
+    protocol: UDP
+    name: geth-1
+  - port: 30312
+    protocol: UDP
+    name: geth-2
+  - port: 30313
+    protocol: UDP
+    name: geth-3
+  clusterIP: 10.152.183.132 # Sabit ip veriyoruz ki conteinerlara bir ip verebilelim
+
+  selector:
+    app: geth

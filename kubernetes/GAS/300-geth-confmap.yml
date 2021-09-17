@@ -1,0 +1,86 @@
+#
+# Bu config dosyasındaki node isimleri gibi değişkenler kullanıcıdan alınacak bilgilere göre şekillenecek ve yazılacak scrip/kodlarla eklenecek
+# 
+# Ayrıca 
+#
+#
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eth-geth
+  namespace: geth
+  labels:
+    app: geth
+data:
+
+  node1: "node-1" # Guiden alınacak bilgi ile değişebillir
+
+  node2: "node-2" # Guiden alınacak bilgi ile değişebillir
+
+  node3: "node-3" # Guiden alınacak bilgi ile değişebillir
+
+  networkid: "7777"
+  
+  password.txt: "qwer"
+
+  UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67: |-
+    {"address":"bc1c09acefbc15a0d325584c7a704fa310907e67","crypto":{"cipher":"aes-128-ctr","ciphertext":"fb861994d279e6a061c831d5021afabf874ead33504d5915bf6cc97eb602337a","cipherparams":{"iv":"88182cc7de7a211aa96fcf0030b60a10"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"7855126a1506ff48a40b232a96e74fa2edfdc26b09edf8fda226037647cb9476"},"mac":"afa03dcd586d0861a04c6f39d2f5264997b9f4c11760a60430326010da166ec0"},"id":"8d41b72d-9a4e-4bb0-8b35-f9bb96c8544f","version":3}
+  
+  UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490: |-
+    {"address":"ab412db6f0733decc8e23ee97e6dc569422a0490","crypto":{"cipher":"aes-128-ctr","ciphertext":"c45107f02504df8eaae78e7d7d5e4f149c8fdf3df6134cd921caee790f1463b1","cipherparams":{"iv":"9f818487f69bd0dc7396c0a1b6197da9"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"7a93e61a8d9669b1bc3eab0241371ad2696c3106b02ab2e589eb6d66550f99ad"},"mac":"8912a34358cc85feb53abf5bc60d2f3d2f2d9b1a86b23c7b97ebccf95b85f9a1"},"id":"f9309183-efe3-4b38-a1ab-d902f1fd0c7d","version":3}
+
+  UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f: |-
+    {"address":"8e24c067e098c2dadf28aec75a551257d2c9316f","crypto":{"cipher":"aes-128-ctr","ciphertext":"9bb0c91170c1e53cf7ebb3e7917f0961c90c61cc797b44fed756a16fad9e5baf","cipherparams":{"iv":"1366453613865ca9c344cfc9e7fa5433"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"c33784d1f1316c170c6aaf8312a64b7cd1373ab3d33b1c0d9d68e58cf31cd9e8"},"mac":"17a3bb29ab8b0581ca208e1cf445b094b8121f4f4c5e021ee5f622553e6d4d3b"},"id":"7c303169-29ae-4b23-a046-2d793bf03549","version":3}
+
+  key-of-addr-1: 383c13ad301f0879ff5ff26355377c386f23cbfa3832273593350a5eb1129bb4
+  
+  key-of-addr-2: 6c429aea17cdae0ea1a9de40455244ab8e9e79b887cf65897f1c2d86604f634a
+  
+  key-of-addr-3: a9e81443dc8e8054774d1e7321f43c1fe1699788e1ee7289f650cb8f7d4d563a
+
+  genesis.json: |-
+    {
+      "config": {
+        "chainId": 7777,
+        "homesteadBlock": 0,
+        "eip150Block": 0,
+        "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "petersburgBlock": 0,
+        "istanbulBlock": 0,
+        "clique": {
+          "period": 10,
+          "epoch": 30000
+        }
+      },
+      "nonce": "0x0",
+      "timestamp": "0x613b4d60",
+      "extraData": "0x00000000000000000000000000000000000000000000000000000000000000008e24c067e098c2dadf28aec75a551257d2c9316fab412db6f0733decc8e23ee97e6dc569422a0490bc1c09acefbc15a0d325584c7a704fa310907e670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "gasLimit": "0x47b760",
+      "difficulty": "0x1",
+      "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "coinbase": "0x0000000000000000000000000000000000000000",
+      "alloc": {
+        "0000000000000000000000000000000000000000": {
+          "balance": "0x1"
+        },
+        "8e24c067e098c2dadf28aec75a551257d2c9316f": {
+          "balance": "0x200000000000000000000000000000000000000000000000000000000000000"
+        },
+        "ab412db6f0733decc8e23ee97e6dc569422a0490": {
+          "balance": "0x200000000000000000000000000000000000000000000000000000000000000"
+        },
+        "bc1c09acefbc15a0d325584c7a704fa310907e67": {
+          "balance": "0x200000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "number": "0x0",
+      "gasUsed": "0x0",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "baseFeePerGas": null
+    }
