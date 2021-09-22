@@ -1,5 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: geth
-#Optional can also be done with kubectl create namespace geth

@@ -69,7 +69,41 @@ spec:
           mountPath: /root/.ethereum/pswd/password.txt
           subPath: password.txt
     
+      - name: create-account-for-nodetx
+        image: ethereum/client-go:release-1.8
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - "printf '$(ACCOUNT_SECRET)\n$(ACCOUNT_SECRET)\n' | geth account new --datadir /root/.ethereum/node-tx"
+        env:
+        - name: ACCOUNT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: password.txt
 
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
+
+      - name: get-account-address
+        image: ethereum/client-go:alltools-release-1.8
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - "printf '$(ACCOUNT_SECRET)\n' | echo -n `ethkey inspect /root/.ethereum/node-tx/keystore/*` > /root/.ethereum/node-tx/deneme.txt && grep -Eo '0x.{40}' /root/.ethereum/node-tx/deneme.txt | head -1  > /root/.ethereum/node-tx/address.txt"
+        env:
+        - name: ACCOUNT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: eth-geth
+              key: password.txt
+
+        volumeMounts:
+        - name: data2
+          mountPath: /root/.ethereum
       
 
       volumes: 
