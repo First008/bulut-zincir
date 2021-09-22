@@ -35,7 +35,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           [
-            "geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30311 --http --http.addr 0.0.0.0 --http.port 8545 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt`  --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
+            "geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30311 --http --http.addr 0.0.0.0 --http.port 8545 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
           ]
         env:                          # Çeşitli enviromental variables
         - name: HOSTNAME
@@ -117,7 +117,7 @@ spec:
         command: ["/bin/sh"]
         args:
           - "-c"
-          - "sleep 1.0 && geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30312 --http --http.addr 0.0.0.0 --http.port 8546 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
+          - "geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30312 --http --http.addr 0.0.0.0 --http.port 8546 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
           
         env:
         - name: HOSTNAME
@@ -200,7 +200,7 @@ spec:
         command: ["/bin/sh"]
         args:
           - "-c"
-          - "sleep 1.5 && geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30313 --http --http.addr 0.0.0.0 --http.port 8547 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
+          - "geth --bootnodes $(cat /root/.ethereum/enodelist.txt) --datadir /root/.ethereum/$(NODE_NAME) --syncmode full --port 30313 --http --http.addr 0.0.0.0 --http.port 8547 --http.vhosts '*' --http.api admin,eth,miner,net,txpool,personal,web3,clique --http.corsdomain '*' --networkid $(NETWORK_ID) --ethstats=$(HOSTNAME):$(ETHSTATS_SECRET)@$(ETHSTATS_SVC) --allow-insecure-unlock --unlock `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --password /root/.ethereum/pswd/password.txt --miner.gasprice 0 --miner.etherbase `cat /root/.ethereum/$(NODE_NAME)/address0x.txt` --mine"
           
         env:
         - name: HOSTNAME

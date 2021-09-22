@@ -56,7 +56,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args: [
           "--datadir", "/root/.ethereum/node-tx",
-          "init", "/root/.ethereum/genesis.json"
+          "init", "/root/.ethereum/configuredgenesis.json"
           ]
 
         volumeMounts:

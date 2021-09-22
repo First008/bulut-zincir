@@ -230,7 +230,7 @@ spec:
 
         command: ["/bin/sh", "-c"]
         args:
-          - "echo -n `cat /root/.ethereum/$(node1)/address.txt` > /root/.ethereum/newaddresses.txt && echo -n `cat /root/.ethereum/$(node2)/address.txt` >> /root/.ethereum/newaddresses.txt && echo -n `cat /root/.ethereum/$(node3)/address.txt` >> /root/.ethereum/newaddresses.txt && cp /root/.ethereum/genesis.json /root/.ethereum/configuredgenesis.json && sed -i -e  s/newaddresses/`cat /root/.ethereum/newaddresses.txt`/g /root/.ethereum/configuredgenesis.json"
+          - "echo -n `cat /root/.ethereum/$(node1)/address.txt` > /root/.ethereum/newaddresses.txt && echo -n `cat /root/.ethereum/$(node2)/address.txt` >> /root/.ethereum/newaddresses.txt && echo -n `cat /root/.ethereum/$(node3)/address.txt` >> /root/.ethereum/newaddresses.txt && cp /root/.ethereum/genesis.json /root/.ethereum/configuredgenesis.json && sed -i -e  s/newaddresses/`cat /root/.ethereum/newaddresses.txt`/g /root/.ethereum/configuredgenesis.json && sed -i -e  s/address1/`cat /root/.ethereum/$(node1)/address.txt`/g /root/.ethereum/configuredgenesis.json && sed -i -e  s/address2/`cat /root/.ethereum/$(node2)/address.txt`/g /root/.ethereum/configuredgenesis.json && sed -i -e  s/address3/`cat /root/.ethereum/$(node3)/address.txt`/g /root/.ethereum/configuredgenesis.json"
         
         env:
         - name: node1
@@ -334,42 +334,42 @@ spec:
           subPath: password.txt
 
 
-      - name: keystore
-        image: alpine
+      # - name: keystore
+      #   image: alpine
 
-        command: ["/bin/sh", "-c"]
-        args:
-          - "cp -r /root/.ethereum/keystore /root/.ethereum/$(node1) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node2) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node3)"
+      #   command: ["/bin/sh", "-c"]
+      #   args:
+      #     - "cp -r /root/.ethereum/keystore /root/.ethereum/$(node1) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node2) && cp -r /root/.ethereum/keystore /root/.ethereum/$(node3)"
         
-        env:
-        - name: node1
-          valueFrom:
-            configMapKeyRef:
-              name: eth-geth
-              key: node1
-        - name: node2
-          valueFrom:
-            configMapKeyRef:
-              name: eth-geth
-              key: node2
-        - name: node3
-          valueFrom:
-            configMapKeyRef:
-              name: eth-geth
-              key: node3
+      #   env:
+      #   - name: node1
+      #     valueFrom:
+      #       configMapKeyRef:
+      #         name: eth-geth
+      #         key: node1
+      #   - name: node2
+      #     valueFrom:
+      #       configMapKeyRef:
+      #         name: eth-geth
+      #         key: node2
+      #   - name: node3
+      #     valueFrom:
+      #       configMapKeyRef:
+      #         name: eth-geth
+      #         key: node3
 
-        volumeMounts:
-        - mountPath: /root/.ethereum
-          name: data2
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
-          subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
-          subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
-          subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f        
+      #   volumeMounts:
+      #   - mountPath: /root/.ethereum
+      #     name: data2
+      #   - name: config-genesis
+      #     mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+      #     subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
+      #   - name: config-genesis
+      #     mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+      #     subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
+      #   - name: config-genesis
+      #     mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
+      #     subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f        
       
 
       
