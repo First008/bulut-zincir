@@ -4,7 +4,7 @@
 
 microk8s.enable registry
 
-go mod bulutzincir
+go mod init bulutzincir
 
 go mod tidy
 
