@@ -4,6 +4,12 @@
 
 microk8s.enable registry
 
+go mod bulutzincir
+
+go mod tidy
+
+go mod vendor
+
 # change directory to ethereum-operator
 cd ethereum-operator
 
