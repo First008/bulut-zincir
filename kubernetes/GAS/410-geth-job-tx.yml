@@ -25,15 +25,7 @@ spec:
         volumeMounts:
         - mountPath: /root/.ethereum
           name: data2
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
-          subPath: UTC--2021-09-09T10-55-14.594491679Z--bc1c09acefbc15a0d325584c7a704fa310907e67
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
-          subPath: UTC--2021-09-09T10-55-30.324205181Z--ab412db6f0733decc8e23ee97e6dc569422a0490
-        - name: config-genesis
-          mountPath: /root/.ethereum/keystore/UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f
-          subPath: UTC--2021-09-09T10-55-43.621998835Z--8e24c067e098c2dadf28aec75a551257d2c9316f        
+    
   
          
       initContainers:
