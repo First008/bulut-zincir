@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 // Package kit for Kubernetes operators
-package operatorkit
+package bulutzincirkit
 
 import (
 	"errors"

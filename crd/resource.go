@@ -18,7 +18,7 @@ which also has the apache 2.0 license.
 */
 
 // Package kit for Kubernetes operators
-package operatorkit
+package bulutzincirkit
 
 import (
 	cntxt "context"
