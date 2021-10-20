@@ -1,6 +1,0 @@
-apiVersion: bulutzincir.io/v1alpha1
-kind: Ethereum
-metadata:
-  name: myethereum
-spec:
-  hello: world

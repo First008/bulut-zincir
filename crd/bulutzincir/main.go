@@ -26,16 +26,15 @@ import (
 	"time"
 
 	bz "bulutzincir"
-	ethereum "bulutzincir/pkg/apis/bulutzincir/ethereum/v1alpha1"
-	ethereumclient "bulutzincir/pkg/client/clientset/versioned/typed/bulutzincir/ethereum/v1alpha1"
+	ethereum "bulutzincir/bulutzincir/pkg/apis/bulutzincir/ethereum/v1alpha1"
+	ethereumclient "bulutzincir/bulutzincir/pkg/client/clientset/versioned/typed/ethereum/v1alpha1"
 
 	v1 "k8s.io/api/core/v1"
 	apiextensionsclient "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-
-	_ "k8s.io/code-generator"
+	//_ "k8s.io/code-generator"
 )
 
 var (

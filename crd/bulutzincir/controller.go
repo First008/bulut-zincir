@@ -21,8 +21,8 @@ import (
 	"fmt"
 
 	bz "bulutzincir"
-	ethereum "bulutzincir/pkg/apis/bulutzincir/ethereum/v1alpha1"
-	ethereumclient "bulutzincir/pkg/client/clientset/versioned/typed/ethereum/v1alpha1"
+	ethereum "bulutzincir/bulutzincir/pkg/apis/bulutzincir/ethereum/v1alpha1"
+	ethereumclient "bulutzincir/bulutzincir/pkg/client/clientset/versioned/typed/ethereum/v1alpha1"
 
 	"k8s.io/client-go/tools/cache"
 )
