@@ -41,3 +41,12 @@ type EthereumList struct {
 	metav1.ListMeta `json:"metadata"`
 	Items           []Ethereum `json:"items"`
 }
+
+type NodeStatus struct {
+	// Consensus is network consensus algorithm
+	Consensus string `json:"consensus,omitempty"`
+	// Network is the network this node is joining
+	Network string `json:"network,omitempty"`
+	// EnodeURL is the node URL
+	EnodeURL string `json:"enodeURL,omitempty"`
+}

@@ -1,35 +1,24 @@
 # kubernetes
 
-## manifest
+## Manifest
 
-- manifest dosyasi nedir ?
-- kubnernetes apisinde neyi temsil eder/manipule eder ? (objects ?)
+ - What is manifest file?
+ - What does it represent/manipulate in kubernetes api? (objects?)What it means 
 
-## sorular
-- minimum demo ortami icin nasil bir manifest gerekli ?
-    - replication controller
-    - service
+## Questions
 
-## notlar
+- What kind of manifest is required for the minimum demo environment?
+    - Replication Controller
+    - Service
 
-- muhtemelen basit bir deployment (dogru terim mi ?) kitaptaki gibi sadece kubectl kullanilarak olusturulabilir fakat her bir object icin ayri manifest olmasi daha iyi olurdu.
- 
- ```
- kubectl run ...
- kubectl expose ...
- ```
+## Notes
 
- bu komutlarda kubernets apisine mudehale ediyor
+- probably a simple deployment (correct term?) can be created using just kubectl as in the book, but it would be better to have a separate manifest for each object.
+```
+kubectl apply -f ...
+```
 
 ## TODO
 
-- [X] disardan erisilebilen minimal bir geth kubernetes objecti olustur (YAML manifest). (manifests/deployments/basic-geth.yml)
+- [X] create a minimal externally accessible geth kubernetes object (YAML manifest). (manifests/deployments/basic-geth.yml)
 
-## cheatsheet
-
-buradan ekleme yapilabilir [kubectl cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
-
-```
-microk8s kubectl describe  geth-on-kube # detay
-microk8s kubectl get pod geth-on-kube # durum
-```
