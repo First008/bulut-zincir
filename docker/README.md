@@ -10,5 +10,5 @@
  
  - This image is already pushed on Docker Hub.
  
- - If you done these steps, continue with the [README](https://bag.org.tr/proje/util/bulut-zincir/tree/master/Kubernetes) inside the Kubernetes folder.
+ - If you done these steps, continue with the [README](https://github.com/First008/bulut-zincir/tree/master/kubernetes) inside the Kubernetes folder.
 
